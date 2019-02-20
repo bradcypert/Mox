@@ -5,26 +5,49 @@ import kotlin.reflect.KClass
 import java.lang.reflect.Proxy
 import java.lang.reflect.InvocationHandler
 import java.lang.reflect.Method
+import java.util.HashSet
 
 
-class Mox {
-    fun someLibraryMethod(): Boolean {
-        return true
+
+
+
+object Mox {
+    interface MoxMarker
+
+    fun<T> stub(mock: T, method: String, fn: () -> Any) {
+
+    }
+
+    fun<T : Any> isMock(mock: T): Boolean {
+        return mock::class.java.interfaces.filter { it.name == MoxMarker::class.java.name }.isNotEmpty()
+    }
+
+    internal class DynamicInvocationHandler : InvocationHandler {
+        @Throws(Throwable::class)
+        override fun invoke(proxy: Any, method: Method, args: Array<Any>): Any {
+            return Any()
+        }
     }
 }
 
-class DynamicInvocationHandler : InvocationHandler {
-    @Throws(Throwable::class)
-    override fun invoke(proxy: Any, method: Method, args: Array<Any>): Any {
-       return Any()
-    }
+fun<T : Any> KClass<T>.mock(): Any {
+    return Proxy.newProxyInstance(
+            java.classLoader,
+            getInterfacesForObject(this) + Mox.MoxMarker::class.java,
+            Mox.DynamicInvocationHandler())
 }
 
-fun<T : Any> KClass<T>.mock(): T {
-    val proxyInstance = Proxy.newProxyInstance(
-            this.java.classLoader,
-            arrayOf<Class<*>>(this.java),
-            DynamicInvocationHandler()) as T
+internal fun getInterfacesForObject(`object`: Any): Array<Class<*>> {
+    val interfaceSet = HashSet<Class<*>>()
 
-    return proxyInstance
+    var objectClass: Class<*> = `object`.javaClass
+    while (Any::class.java != objectClass) {
+        val classInterfaces = objectClass.interfaces
+        classInterfaces.forEach {
+            interfaceSet.add(it)
+        }
+        objectClass = objectClass.superclass
+    }
+
+    return interfaceSet.toTypedArray()
 }
