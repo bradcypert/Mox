@@ -14,13 +14,13 @@
   },
 
   "version": {
-    "name": "@VERSION@",
+    "name": "0.0.1",
     "gpgSign": false
   },
 
   "files":
   [
-    {"includePattern": "build/libs/(.*)", "uploadPattern": "@VERSION@/$1"}
+    {"includePattern": "build/libs/(.*)", "uploadPattern": "com/bradcypert/mox/$1"}
   ],
   "publish": true
 }
