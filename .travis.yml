@@ -20,11 +20,12 @@ jobs:
   - stage: publish
     name: Publish to Bintray
     deploy:
+      skip_cleanup: true
       provider: bintray
       file: "bintray.json"
       user: $BINTRAY_API_USER
       key: $BINTRAY_API_KEY
-      dry-run: true
+      dry-run: false
 
 
 
