@@ -1,0 +1,26 @@
+{
+  "package": {
+    "name": "mox",
+    "repo": "mox",
+    "subject": "bradcypert",
+    "desc": "Simple, reflective Kotlin-based Mocking for the JVM.",
+    "website_url": "https://github.com/bradcypert",
+    "issue_tracker_url": "https://github.com/bradcypert/mox/issues",
+    "vcs_url": "https://github.com/bradcypert/mox.git",
+    "licenses": ["MIT"],
+    "labels": ["kotlin", "testing", "mock", "mocking"],
+    "public_download_numbers": false,
+    "public_stats": false
+  },
+
+  "version": {
+    "name": "@VERSION@",
+    "gpgSign": false
+  },
+
+  "files":
+  [
+    {"includePattern": "build/libs/(.*)", "uploadPattern": "@VERSION@/$1"}
+  ],
+  "publish": true
+}

@@ -6,3 +6,17 @@ jdk:
 
 script:
   - ./gradlew build test
+
+before_deploy:
+  - ./gradlew generatePomFileForMavenPublication
+
+deploy:
+  skip_cleanup: true
+  provider: bintray
+  file: "bintray.json"
+  user: $BINTRAY_API_USER
+  key: $BINTRAY_API_KEY
+  dry-run: true
+  on:
+    tags: true
+
