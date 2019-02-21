@@ -24,8 +24,9 @@ object Mox {
 
     internal class DynamicInvocationHandler : InvocationHandler {
         @Throws(Throwable::class)
-        override fun invoke(proxy: Any, method: Method, args: Array<Any>): Any {
-            impl["TODO UUID"]?.get(method.name)?.invoke(args)
+        override fun invoke(proxy: Any, method: Method, args: Array<Any>?): Any {
+            val arguments = args ?: arrayOf()
+            impl["TODO UUID"]?.get(method.name)?.invoke(arguments)
             return Any()
         }
     }
