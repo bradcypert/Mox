@@ -57,6 +57,44 @@ class MoxTest {
         assert(isCalled)
     }
 
+    @Test fun stubMultipleWorks() {
+        var isCalled = false
+        var isCalled2 = false
+        val classUnderTest = UserRepo::class.mock() as Repo<*>
+        Mox.stub(classUnderTest, classUnderTest::read) {
+            isCalled = true
+        }
+
+        val classUnderTest2 = UserRepo::class.mock() as Repo<*>
+
+        Mox.stub(classUnderTest2, classUnderTest::read) {
+            isCalled2 = true
+        }
+
+        classUnderTest.read(1)
+        classUnderTest2.read(1)
+
+        assert(isCalled)
+        assert(isCalled2)
+    }
+
+    @Test fun restubbingWorks() {
+        var isCalled = false
+        val classUnderTest = UserRepo::class.mock() as Repo<*>
+        Mox.stub(classUnderTest, classUnderTest::read) {
+            isCalled = false
+        }
+
+        Mox.stub(classUnderTest, classUnderTest::read) {
+            isCalled = true
+        }
+
+        classUnderTest.read(1)
+
+        assert(isCalled)
+    }
+
+
     @Test fun isMock() {
         val classUnderTest = UserRepo::class.mock()
         assertTrue(Mox.isMock(classUnderTest))
