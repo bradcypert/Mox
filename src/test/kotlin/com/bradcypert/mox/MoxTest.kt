@@ -45,8 +45,14 @@ class ViewModel(val repo: Repo<User>) {
 }
 
 class MoxTest {
-    @Test fun testSomeLibraryMethod() {
-        val classUnderTest = UserRepo::class.mock()
+    @Test fun stubsWork() {
+        var isCalled = false
+        val classUnderTest = UserRepo::class.mock() as Repo<*>
+        Mox.stub(classUnderTest, classUnderTest::read) {
+            isCalled = true
+        }
+
+        classUnderTest.read(1)
     }
 
     @Test fun isMock() {
