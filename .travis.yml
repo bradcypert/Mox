@@ -4,19 +4,27 @@ install: true
 jdk:
   - oraclejdk8
 
-script:
-  - ./gradlew build test
-
 before_deploy:
   - ./gradlew generatePomFileForMavenPublication
 
-deploy:
-  skip_cleanup: true
-  provider: bintray
-  file: "bintray.json"
-  user: $BINTRAY_API_USER
-  key: $BINTRAY_API_KEY
-  dry-run: true
-  on:
-    tags: true
+stages:
+- name: test
+- name: publish
+  if: "(branch = master AND type = push)"
+
+jobs:
+  include:
+  - stage: test
+    name: Tests
+    script: "./gradlew build test"
+  - stage: publish
+    name: Publish to Bintray
+    deploy:
+      provider: bintray
+      file: "bintray.json"
+      user: $BINTRAY_API_USER
+      key: $BINTRAY_API_KEY
+      dry-run: true
+
+
 
