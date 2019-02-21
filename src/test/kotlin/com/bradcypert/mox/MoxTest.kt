@@ -53,6 +53,8 @@ class MoxTest {
         }
 
         classUnderTest.read(1)
+
+        assert(isCalled)
     }
 
     @Test fun isMock() {
