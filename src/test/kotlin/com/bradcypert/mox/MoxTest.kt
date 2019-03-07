@@ -94,6 +94,20 @@ class MoxTest {
         assert(isCalled)
     }
 
+    @Test fun respondingWorks() {
+        val classUnderTest = UserRepo::class.mock() as Repo<*>
+
+        data class User(val name: String)
+
+        Mox.respond(classUnderTest, classUnderTest::read) {
+            return@respond User(name = "Brad")
+        }
+
+        val result = classUnderTest.read(1) as User
+
+        assert(result.name == "Brad")
+    }
+
 
     @Test fun isMock() {
         val classUnderTest = UserRepo::class.mock()
