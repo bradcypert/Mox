@@ -10,7 +10,7 @@ That's Mox. A mocking library/pattern that does what it says it does.
 #### Are we there yet?
 - [x] Mocking Creates a Proxy Class
 - [x] Stub a mock to run a function
-- [ ] Specify return value when a function is called
+- [x] Specify return value when a function is called
 - [ ] Metadata regarding function calls (nice, but should be achievable with Stubs)
 - [ ] Retaining the generic when proxying an interface that uses a generic
 - [ ] More elaborate tests
