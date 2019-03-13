@@ -69,3 +69,68 @@ class MoxTest {
 ```
 
 This example is pulled directly from the tests! If you'd like to find more examples, check out the tests!
+
+
+### FAQ
+#### What is a stub?
+In Mox, a stub replaces a function implementation. If you have a `Repo` class that has a `delete` method that throws an exception, stubbing it would prevent that exception from being thrown an instead run a different function in it's place! Neat!
+
+#### What if I want my stub to return something?
+In Mox, we call that a response and a response is handled using the `respond` function. Here's an example `Mox.respond(classUnderTest, classUnderTest::read, User(name = "Brad"))`. If you need to act on parameters or other decision-making logic, you can instead provide a function as the last parameter instead of a value. For example:
+
+```
+Mox.respond(classUnderTest, classUnderTest::read) { args: Array<Any> -> User(name = "Brad") }
+```
+#### How do I check if a method is called?
+```
+var isCalled = false
+val classUnderTest = UserRepo::class.mock() as Repo<*>
+Mox.stub(classUnderTest, classUnderTest::read) {
+    isCalled = true
+}
+
+classUnderTest.read(1)
+assert(isCalled)
+```
+
+#### How do I return a specific value?
+```
+val classUnderTest = UserRepo::class.mock() as Repo<*>
+Mox.respond(classUnderTest, classUnderTest::read, User(name = "Brad"))
+
+val result = classUnderTest.read(1) as User
+
+assert(result.name == "Brad")
+```
+
+#### How do I return a specific value when a certain argument is passed?
+This isn't a great implementation currently, and is subject to change. If you must do this while I'm working out the API, you can do the following:
+
+```
+val classUnderTest = UserRepo::class.mock() as Repo<*>
+Mox.respond(classUnderTest, classUnderTest::read) { args: Array<Any> ->
+    if (args.first() == 1) {
+      return@respond User(name = "Brad")
+    } else {
+      throw IllegalArgumentException("1 was not passed to the mocked function")
+    }
+}
+
+val result = classUnderTest.read(1) as User
+assert(result.name == "Brad")
+```
+
+#### How do I act upon my arguments when stubbing a function?
+```
+var isCalled = false
+val classUnderTest = UserRepo::class.mock() as Repo<*>
+Mox.stub(classUnderTest, classUnderTest::read) { args: Array<Any> ->
+    if (args.first() == 1) {
+        isCalled = true
+    } else {
+        throw IllegalArgumentException("1 was not passed to the mocked function")
+    }
+}
+classUnderTest.read(1) as User
+assert(isCalled)
+```
