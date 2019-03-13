@@ -78,11 +78,11 @@ In Mox, a stub replaces a function implementation. If you have a `Repo` class th
 #### What if I want my stub to return something?
 In Mox, we call that a response and a response is handled using the `respond` function. Here's an example `Mox.respond(classUnderTest, classUnderTest::read, User(name = "Brad"))`. If you need to act on parameters or other decision-making logic, you can instead provide a function as the last parameter instead of a value. For example:
 
-```
+```kotlin
 Mox.respond(classUnderTest, classUnderTest::read) { args: Array<Any> -> User(name = "Brad") }
 ```
 #### How do I check if a method is called?
-```
+```kotlin
 var isCalled = false
 val classUnderTest = UserRepo::class.mock() as Repo<*>
 Mox.stub(classUnderTest, classUnderTest::read) {
@@ -94,7 +94,7 @@ assert(isCalled)
 ```
 
 #### How do I return a specific value?
-```
+```kotlin
 val classUnderTest = UserRepo::class.mock() as Repo<*>
 Mox.respond(classUnderTest, classUnderTest::read, User(name = "Brad"))
 
@@ -106,7 +106,7 @@ assert(result.name == "Brad")
 #### How do I return a specific value when a certain argument is passed?
 This isn't a great implementation currently, and is subject to change. If you must do this while I'm working out the API, you can do the following:
 
-```
+```kotlin
 val classUnderTest = UserRepo::class.mock() as Repo<*>
 Mox.respond(classUnderTest, classUnderTest::read) { args: Array<Any> ->
     if (args.first() == 1) {
@@ -121,7 +121,7 @@ assert(result.name == "Brad")
 ```
 
 #### How do I act upon my arguments when stubbing a function?
-```
+```kotlin
 var isCalled = false
 val classUnderTest = UserRepo::class.mock() as Repo<*>
 Mox.stub(classUnderTest, classUnderTest::read) { args: Array<Any> ->
