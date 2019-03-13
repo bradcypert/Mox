@@ -94,6 +94,20 @@ class MoxTest {
         assert(isCalled)
     }
 
+    @Test fun stubbingAcceptsParameters() {
+        var isCalled = false
+        val classUnderTest = UserRepo::class.mock() as Repo<*>
+        Mox.stub(classUnderTest, classUnderTest::read) { args: Array<Any> ->
+            if (args.first() == 1) {
+                isCalled = true
+            } else {
+                throw IllegalArgumentException("1 was not passed to the mocked function")
+            }
+        }
+        classUnderTest.read(1) as User
+        assert(isCalled)
+    }
+
     @Test fun respondingWorks() {
         val classUnderTest = UserRepo::class.mock() as Repo<*>
         Mox.respond(classUnderTest, classUnderTest::read) {
@@ -111,6 +125,20 @@ class MoxTest {
 
         val result = classUnderTest.read(1) as User
 
+        assert(result.name == "Brad")
+    }
+
+    @Test fun respondingAcceptsParameters() {
+        val classUnderTest = UserRepo::class.mock() as Repo<*>
+        Mox.respond(classUnderTest, classUnderTest::read) { args: Array<Any> ->
+            if (args.first() == 1) {
+                return@respond User(name = "Brad")
+            } else {
+                throw IllegalArgumentException("1 was not passed to the mocked function")
+            }
+        }
+
+        val result = classUnderTest.read(1) as User
         assert(result.name == "Brad")
     }
 
