@@ -131,6 +131,6 @@ Mox.stub(classUnderTest, classUnderTest::read) { args: Array<Any> ->
         throw IllegalArgumentException("1 was not passed to the mocked function")
     }
 }
-classUnderTest.read(1) as User
+classUnderTest.read(1)
 assert(isCalled)
 ```
