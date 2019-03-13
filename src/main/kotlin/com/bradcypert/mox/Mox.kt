@@ -28,6 +28,13 @@ object Mox {
         }
     }
 
+    fun<T: Any, X: Any> respond(mock: T, method: KFunction<*>, response: X) {
+        if (isMock(mock)) {
+            val handler = Proxy.getInvocationHandler(mock) as DynamicInvocationHandler
+            impl += mapOf(handler.uuid.toString() to mapOf(method.name to fun(_: Array<Any>): X = response))
+        }
+    }
+
     fun<T : Any> isMock(mock: T): Boolean {
         return mock::class.java.interfaces.any { it.name == MoxMarker::class.java.name }
     }

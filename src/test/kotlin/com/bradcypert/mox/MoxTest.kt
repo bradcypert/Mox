@@ -96,14 +96,39 @@ class MoxTest {
 
     @Test fun respondingWorks() {
         val classUnderTest = UserRepo::class.mock() as Repo<*>
-
-        data class User(val name: String)
-
         Mox.respond(classUnderTest, classUnderTest::read) {
             return@respond User(name = "Brad")
         }
 
         val result = classUnderTest.read(1) as User
+
+        assert(result.name == "Brad")
+    }
+
+    @Test fun respondingWorksWithoutTheNeedForAFunction() {
+        val classUnderTest = UserRepo::class.mock() as Repo<*>
+        Mox.respond(classUnderTest, classUnderTest::read, User(name = "Brad"))
+
+        val result = classUnderTest.read(1) as User
+
+        assert(result.name == "Brad")
+    }
+
+    @Test fun respondingWorksInADependentSituation() {
+        //TODO:: How do I get this to infer the Repo with the appropriate generic, * works
+        val classUnderTest = UserRepo::class.mock() as Repo<User>
+
+        Mox.respond(classUnderTest, classUnderTest::read) {
+            return@respond User(name = "Brad")
+        }
+
+        class Wrapper(val repo: Repo<User>) {
+            fun findUserById(id: Int): User = repo.read(id)
+        }
+
+        val wrapper = Wrapper(classUnderTest)
+
+        val result = wrapper.findUserById(1)
 
         assert(result.name == "Brad")
     }
