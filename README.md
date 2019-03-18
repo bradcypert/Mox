@@ -3,7 +3,7 @@
 - No massive library (even for test dependencies)
 - Yes to [Liskov Substitution](http://wiki.c2.com/?LiskovSubstitutionPrinciple), [Interface Segregation](https://en.wikipedia.org/wiki/Interface_segregation_principle), [Dependency Inversion](http://wiki.c2.com/?DependencyInversionPrinciple).
 
-That's Mox: a mocking library/pattern that does what it says, and says it does.
+That's Mox: a mocking library/pattern that does what it says, and says what it does.
 
 **Note**: Mox only works because you use interfaces properly. If you do not follow the [Liskov Substitution](http://wiki.c2.com/?LiskovSubstitutionPrinciple) princple, [Interface Segregation](https://en.wikipedia.org/wiki/Interface_segregation_principle) Principle, and [Dependency Inversion](http://wiki.c2.com/?DependencyInversionPrinciple) Princinple, you're may want a library like Mockito. If you do use interfaces properly, you can use this extremely lightweight, non-bytecode-manipulating library to help with quick and easy mocking/stubbing.
 
