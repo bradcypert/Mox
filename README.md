@@ -1,4 +1,4 @@
-# Mox [![Build Status](https://travis-ci.com/bradcypert/Mox.svg?branch=master)](https://travis-ci.com/bradcypert/Mox)
+# Mox [![Build Status](https://travis-ci.com/bradcypert/Mox.svg?branch=master)](https://travis-ci.com/bradcypert/Mox) [![CodeFactor](https://www.codefactor.io/repository/github/bradcypert/mox/badge)](https://www.codefactor.io/repository/github/bradcypert/mox)
 - No bytecode manipulation
 - No massive library (even for test dependencies)
 - Yes to [Liskov Substitution](http://wiki.c2.com/?LiskovSubstitutionPrinciple), [Interface Segregation](https://en.wikipedia.org/wiki/Interface_segregation_principle), [Dependency Inversion](http://wiki.c2.com/?DependencyInversionPrinciple).
